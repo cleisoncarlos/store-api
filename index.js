@@ -47,8 +47,8 @@ app.use((err, req, res, next) => {
 })
 
 
-
 app.listen(3000, () => {
    // console.log('rodando na porta 3000!')
    logger.info('API Started!')
+  
 })

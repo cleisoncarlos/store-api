@@ -4,7 +4,7 @@ import SaleService from "../services/sale.service.js";
 async function createSale(req, res, next){
     try {
         let sale = req.body;        
-        if (!sale.value || !sale.date || !sale.client_id || !sale.product_id ){
+        if (!sale.value || !sale.date || !sale.clientId || !sale.productId ){
             throw new Error('Todas as informações são obrigatórias !')
         }
         sale = await SaleService.createSale(sale)
@@ -21,13 +21,12 @@ async function createSale(req, res, next){
 
 async function getSales (req, res, next){
     try {
-        res.send(await SaleService.getSales())
-        logger.info('GET /client')
+        res.send(await SaleService.getSales(req.query.productId, req.query.supplierId))
+        logger.info(`GET /sale`)
 } catch (err){
     next(err)
 }
 }
-
 
 //========================
 
@@ -63,7 +62,7 @@ async function updateSale (req, res, next){
     try {      
                 
         let sale = req.body;        
-        if (!sale.sale_id || !sale.value || !sale.date || !sale.client_id || !sale.product_id){
+        if (!sale.saleId || !sale.value || !sale.date || !sale.clientId || !sale.productId){
             throw new Error('Todas as informações são obrigatórias !')
         }
         sale = await SaleService.updateSale(sale)

@@ -1,27 +1,28 @@
-import pg from 'pg'
+import { Sequelize } from 'sequelize';
+import 'dotenv/config'
 
-async function connect (){
-    if(global.connection){
-        return global.connection.connect()
-    }
 
-const pool = new pg.Pool({
-    // const client = new pg.Client('postgres://postgres:postgres@localhost:5432/postgres')
-    user: 'postgres',          
-    host: 'localhost',            
-    database: 'store_xp',
-    password: '123456',        
-    port: 5432,                   // Porta padrão do PostgreSQL
-    max: 10,                      // Número máximo de conexões no pool
-    idleTimeoutMillis: 30000,     // Tempo ocioso antes de fechar a conexão
-    connectionTimeoutMillis: 2000,// Tempo de espera para obter uma conexão
-  });
 
-global.connection = pool
+//'database', 'username', 'password'
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    dialect: "postgres",
+    // se não colocar o define ele gera tabelas de data de criação e alteração 
+    define: {
+        timestamps: false
+    },
+   logging: false // não retorna oo teste de conexão 'SELECT 1+1 AS result'
+  }
+)
 
-return pool.connect()
-}
 
-export {
-    connect
-}
+// Test connection and log errors
+sequelize.authenticate()
+  .then(() => {
+    logger.info('Connection has been established successfully.');
+  })
+  .catch(err => {
+    logger.error(`Unable to connect to the database: ${err.message}`);
+    });
+
+export default sequelize

@@ -19,7 +19,7 @@ async function createSupplier(req, res, next){
 //=======================================================
 
 
-async function getSuppliers (req, res, next){
+async function getSuppliers (_req, res, next){
     try {
         res.send(await SupplierService.getSuppliers())
         logger.info('GET /client')
@@ -63,13 +63,13 @@ async function updateSupplier (req, res, next){
     try {      
                 
         let supplier = req.body;        
-        if (!supplier.supplier_id || !supplier.name || !supplier.cnpj || !supplier.phone || !supplier.email || !supplier.address){
+        if (!supplier.supplierId || !supplier.name || !supplier.cnpj || !supplier.phone || !supplier.email || !supplier.address){
             throw new Error('Todas as informações são obrigatórias !')
         }
         supplier = await SupplierService.updateSupplier(supplier)
            res.send(supplier)
         logger.info(`PUT /supplier - ${JSON.stringify(supplier)}`)
-        logger.info('PUT /supplier')
+     
 } catch (err){
     next(err)
 }

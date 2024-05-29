@@ -1,5 +1,6 @@
 import ProductRepository from "../repositories/product.repository.js";
 import SupplierRepository from "../repositories/supplier.repository.js";
+import SaleRepository from '../repositories/sale.repository.js'
 
 async function createProduct(product) {
     if(await SupplierRepository.getSupplier(product.supplier_id)){
@@ -24,6 +25,12 @@ async function updateProduct(product) {
 }
 
 async function deleteProduct(id) {
+const sales = await SaleRepository.getSale(id)
+
+if (sales) {
+  throw new Error ('Não é possivel excluir o produto, pois ele tem vendas')
+}
+
     await ProductRepository.deleteProduct(id);
   }
 
