@@ -78,10 +78,46 @@ async function updateProduct(req, res, next) {
   }
 }
 
+
+
+
+// mongodb
+
+async function createProductInfo(req, res, next){
+  try {
+    let productInfo = req.body;
+    if(!productInfo.productId){
+      throw new Error("O ID do produto é obrigatório !");
+    }
+    await ProductService.createProductInfo(productInfo)
+    res.end()
+    logger.info(`POST / product/info - ${JSON.stringify(productInfo)}`)
+  } catch(err){
+    next(err)
+  }
+}
+
+
+async function updateProductInfo(req, res, next){
+  try {
+    let productInfo = req.body;
+    if(!productInfo.productId){
+      throw new Error("O ID do produto é obrigatório !");
+    }
+    await ProductService.updateProductInfo(productInfo)
+    res.end()
+    logger.info(`PUT / product/info - ${JSON.stringify(productInfo)}`)
+  } catch(err){
+    next(err)
+  }
+}
+
 export default {
   createProduct,
   getProducts,
   getProduct,
   updateProduct,
   deleteProduct,
+  createProductInfo,
+  updateProductInfo
 };
